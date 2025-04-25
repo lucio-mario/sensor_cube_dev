@@ -45,15 +45,7 @@ OBJCOPY_FLAGS = -O ihex -R .eeprom -j .text -j .data
 
 # ----------------------------------------------------------------------
 # Phonies
-.PHONY: default all clean build bin hex flash run print
-
-## Default phonie
-default:
-	avr-gcc -std=c99 -Werror -Wall -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o src/main.o src/main.c
-	avr-gcc -o src/main.bin src/main.o
-	avr-objcopy -O ihex -R .eeprom -j .text -j .data src/main.bin src/main.hex
-	sudo avrdude -F -V -c arduino -p m328p -P /dev/ttyACM0 -b 115200 -U flash:w:src/main.hex
-	sudo picocom -b 9600 /dev/ttyACM0
+.PHONY: all clean build bin hex flash run print
 
 ## Buids, flashes and opens serial monitor
 all: build flash run
