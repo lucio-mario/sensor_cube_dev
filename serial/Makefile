@@ -65,11 +65,11 @@ hex: $(TARGET).hex
 
 ## Flashes
 flash: $(TARGET).hex
-	sudo $(AVRDUDE) $(AVRDUDE_FLAGS)
+	$(AVRDUDE) $(AVRDUDE_FLAGS)
 
 ## Opens serial monitor
 run:
-	sudo $(SERIAL_MONITOR) -b $(SERIAL_MONITOR_BAUD_RATE) $(MCU_PORT)
+	$(SERIAL_MONITOR) -b $(SERIAL_MONITOR_BAUD_RATE) $(MCU_PORT)
 
 ## Debug
 print:
@@ -86,7 +86,7 @@ $(TARGET).hex: $(TARGET).bin
 
 $(TARGET).bin: $(OBJECTS)
 	@mkdir -p $(dir $@)
-	$(CC) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) 
 	@mkdir -p $(dir $@)

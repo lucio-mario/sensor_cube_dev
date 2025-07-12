@@ -11,7 +11,7 @@ void uart_init(void)
     UBRR0H = (uint8_t)(MYUBRR >> 8); //Puts the 8 most significant bits of calculated UBRR
     UBRR0L = (uint8_t)(MYUBRR); //Puts the 8 least significant bits of calculated UBRR
     UCSR0A &= ~(1 << U2X0); //Disable asynchrounous double speed mode
-    UCSR0B = (1 << TXEN0); //Enables USART transmitter
+    UCSR0B |= (1 << TXEN0); //Enables USART transmitter
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); //Configures the data package bits (8-bit data, 1 stop bit, no parity)
 }
 
@@ -34,9 +34,8 @@ int main(void)
     while(1)
     {
         uart_transmit_string("hello\r\n");
-        _delay_ms(3000);
+        _delay_ms(1000);
     }
     
     return 0;
 }
-
