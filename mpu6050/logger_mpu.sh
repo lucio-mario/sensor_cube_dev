@@ -1,0 +1,22 @@
+#!/bin/bash
+# Configurations
+SERIAL_PORT="/dev/ttyACM0"
+DATA_FILE="live_data.txt"
+TMP_FILE="${DATA_FILE}.tmp"
+BAUD_RATE=9600
+
+# Limpa os arquivos antigos
+> "$DATA_FILE"
+
+echo "Configuring the serial port: $SERIAL_PORT a $BAUD_RATE baud..."
+stty -F "$SERIAL_PORT" $BAUD_RATE raw -echo
+
+echo "Starting MPU6050 logger"
+echo "MPU6050 Data -> $DATA_FILE"
+
+while IFS= read -r linha;
+do
+  linha_limpa=$(echo "$linha" | tr -d '\r')
+  echo "$linha_limpa" >> "$DATA_FILE"
+  tail -n 500 "$DATA_FILE" > "$TMP_FILE" && mv "$TMP_FILE" "$DATA_FILE"
+done < "$SERIAL_PORT"
